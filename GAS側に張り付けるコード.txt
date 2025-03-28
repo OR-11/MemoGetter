@@ -1,0 +1,50 @@
+function doGet(){
+  let spreadSheet = SpreadsheetApp.getActive();
+  let sheet = spreadSheet.getSheets()[0];
+
+  let values = sheet.getDataRange().getValues();
+
+  let jsonalizedValues = "{\"data\":[";
+  
+  for (let i = 0; i < values.length - 1; i++){
+    if (i > 0)
+      jsonalizedValues += ", ";
+    jsonalizedValues += `"${encodeURI(values[i + 1][1])}"`;
+  }
+  jsonalizedValues += "]}"
+
+  //残った内容を削除
+  sheet.getRange(`A2:B${values.length}`).clearContent();
+
+  console.log(jsonalizedValues);
+
+  let output = ContentService.createTextOutput();
+  output.setMimeType(ContentService.MimeType.JSON);
+  output.setContent(jsonalizedValues);
+  return output;
+
+  return HtmlService.createHtmlOutput(jsonalizedValues);
+}
+
+function HtmlEscape(s){
+  let r = "";
+  const RplaceList = [`"`, `′`, `″`, `&`, `<`, `>`];
+  const Replace2 = 
+    {
+      "\"" : "&quote;",
+      "′" : "&prime;",
+      "″" : "&Prime;",
+      "&" : "&amp;",
+      "<" : "&lt;",
+      ">" : "&gt;"
+    };
+  for(let i = 0; i < s.length; i++){
+    if (RplaceList.includes(s[i])){
+      r += Replace2[s[i]];
+    }
+    else
+      r += s[i];
+  }
+
+  return r;
+}
