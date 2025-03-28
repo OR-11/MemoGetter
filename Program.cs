@@ -10,6 +10,7 @@ namespace MemoGetter
     internal class Program
     {
         static bool isDark;
+        static bool OpenAnyway;
         static void Main(string[] args)
         {
             Console.WriteLine("取得中...");
@@ -34,13 +35,16 @@ namespace MemoGetter
             }
 
             //開く
-            var startInfo = new ProcessStartInfo()
+            if (htmlGenerator.memo.Count > 0 || OpenAnyway)
             {
-                WorkingDirectory = "./Temp/",
-                FileName = "Memos.html",
-                UseShellExecute = true,
-            };
-            Process.Start(startInfo);
+                var startInfo = new ProcessStartInfo()
+                {
+                    WorkingDirectory = "./Temp/",
+                    FileName = "Memos.html",
+                    UseShellExecute = true,
+                };
+                Process.Start(startInfo);
+            }
         }
 
         static async Task<string[]> MemoGetter()
@@ -57,6 +61,9 @@ namespace MemoGetter
 
             //ダークモードかどうか
             isDark = (bool)jsonalized["DarkMode"];
+
+            //要素が0でも開くかどうか
+            OpenAnyway = (bool)jsonalized["OpenAnyway"];
 
             //メモ取得
             JsonNode jsonalizedAnswer;

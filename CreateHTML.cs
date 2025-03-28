@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace MemoGetter
 {
@@ -39,19 +40,31 @@ namespace MemoGetter
                 //hrごと少し真ん中に寄せるdiv
                 htmlr += "<div style=\"padding-left: 30px; padding-right: 30px;\">\n";
                 {
-                    for (int i = 0; i < memo.Count; i++)//一つの要素
+                    if (memo.Count > 0)
+                    {
+                        for (int i = 0; i < memo.Count; i++)//一つの要素
+                        {
+                            //hrの内側へ少し真ん中に寄せるdiv
+                            htmlr += "<div style=\"padding-left: 30px; padding-right: 30px;\">\n";
+                            {
+                                htmlr += $"<h2{(isDark ? " style=\"color: #ffffff;\"" : "")}>{i + 1} <button id=\"downloadNo{i}Button\"><big>保存</big></button></h2>\n";
+                                htmlr += $"<p id=\"downloadNo{i}\"{(isDark ? " style=\"color: #ffffff;\"" : "")}>{memo[i]}</p>\n";
+                                htmlr += GenerateSaveScript(i) + "\n";
+                            }
+                            htmlr += "</div>\n";
+
+                            if (i + 1 < memo.Count)
+                                htmlr += "<hr />\n";
+                        }
+                    }
+                    else
                     {
                         //hrの内側へ少し真ん中に寄せるdiv
                         htmlr += "<div style=\"padding-left: 30px; padding-right: 30px;\">\n";
                         {
-                            htmlr += $"<h2{(isDark ? " style=\"color: #ffffff;\"" : "")}>{i + 1} <button id=\"downloadNo{i}Button\"><big>保存</big></button></h2>\n";
-                            htmlr += $"<p id=\"downloadNo{i}\"{(isDark ? " style=\"color: #ffffff;\"" : "")}>{memo[i]}</p>\n";
-                            htmlr += GenerateSaveScript(i) + "\n";
+                            htmlr += $"<h1 style=\"text-align: center;{(isDark ? " color: #ffffff;" : "")}\">送信履歴はありませんでした。</h1>\n";
                         }
                         htmlr += "</div>\n";
-
-                        if (i + 1 < memo.Count)
-                            htmlr += "<hr />\n";
                     }
                 }
                 htmlr += "</div>\n";
