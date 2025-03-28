@@ -11,7 +11,7 @@ Googleフォームを作成してください。作成したら入力欄を1つ�
 - PC側  
 とりあえずビルドします。
 Settings.jsonをMemoGetter.exeと同じ階層に配置し、Settings.jsonの中のURLの値の[デプロイID]と書かれているところを、デプロイしたGASのデプロイIDに置き換えます。  
-Settings.jsonのDarkModeで、実行後に表示されるページをダークモードにするか変更できます。
+Settings.jsonのDarkModeで、実行後に表示されるページをダークモードにするか変更できます。  
 Settings.jsonのOpenAnywayで、実行時、取得内容数が0の時ページを表示するかどうかを設定できます。  
 ### 使用
 任意の端末から作成したフォームにアクセスし、内容を書きこみ、送信します。  
